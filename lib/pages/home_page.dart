@@ -35,6 +35,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       duration: const Duration(milliseconds: 250),
       vsync: this,
     );
+    _pageController.addListener(() {
+      log("${_pageController.position.pixels}");
+    });
+    setState(() {});
   }
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         title: const Text("首页",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.green,
       ),
-      body: buildGestureDetector(),
+      // body: buildGestureDetector(),
+      body: PageView.builder(itemBuilder: (BuildContext context, int index) {
+        return buildPageItem(index);
+      },controller: _pageController,itemCount: 3,onPageChanged: (currentPageIndex){
+        log("currentPageIndex:$currentPageIndex");
+      },)
     );
   }
   //手势控制左右滑动
@@ -80,11 +89,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
   Widget buildPageItem(int index){
+    log("build,$index");
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: colors[index],
-        border: Border.all(width: 20,color: Colors.grey)
+          color: colors[index],
+          border: Border.all(width: 20,color: Colors.grey)
       ),
       child: Center(child: Text("$index",style: const TextStyle(fontSize: 40,fontWeight: FontWeight.w700),)),
     );
@@ -105,6 +115,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void dispose() {
     // TODO: implement dispose
     _ctrl.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 }
