@@ -38,6 +38,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     _pageController.addListener(() {
       log("${_pageController.position.pixels}");
     });
+    _ctrl.addStatusListener((status) {
+      log("status:$status");
+    });
     setState(() {});
   }
   @override
@@ -48,12 +51,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         title: const Text("首页",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.green,
       ),
-      // body: buildGestureDetector(),
-      body: PageView.builder(itemBuilder: (BuildContext context, int index) {
-        return buildPageItem(index);
-      },controller: _pageController,itemCount: 3,onPageChanged: (currentPageIndex){
-        log("currentPageIndex:$currentPageIndex");
-      },)
+      body: buildGestureDetector(),
+      // body: PageView.builder(itemBuilder: (BuildContext context, int index) {
+      //   return buildPageItem(index);
+      // },controller: _pageController,itemCount: 3,onPageChanged: (currentPageIndex){
+      //   log("currentPageIndex:$currentPageIndex");
+      // },)
     );
   }
   //手势控制左右滑动
@@ -75,8 +78,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         dragValue.value = cur.clamp(-MediaQuery.of(context).size.width, MediaQuery.of(context).size.width);
       },
       onHorizontalDragEnd: (event){
-        log("end.....,${dragValue.value}");
         if(dragValue.value.abs()>(MediaQuery.of(context).size.width/2)){
+          log("end.....,${dragValue.value}");
           open();
         }else{
           close();
@@ -103,7 +106,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Future<void> open() async {
     Animation<double> anim = Tween<double>(begin: dragValue.value, end: -MediaQuery.of(context).size.width).animate(_ctrl);
     anim.addListener(() => dragValue.value = anim.value);
-    await _ctrl.forward(from: 0);
+    await _ctrl.forward(from: -MediaQuery.of(context).size.width);
   }
   // 动画关闭
   Future<void> close() async {
@@ -128,8 +131,6 @@ class SwiperFlowDelegate extends FlowDelegate{
   void paintChildren(FlowPaintingContext context) {
     // TODO: implement paintChildren
     Matrix4 offsetM4 = Matrix4.translationValues(offsetX.value, 0, 0);
-    context.paintChild(2);
-    context.paintChild(1);
     context.paintChild(page.value, transform: offsetM4);
   }
 
