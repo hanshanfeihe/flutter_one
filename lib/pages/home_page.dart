@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked_page_view/stacked_page_view.dart';
+
+import '../widgets/stackedPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,11 +37,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       vsync: this,
     );
     _pageController.addListener(() {
-      log("${_pageController.position.pixels}");
+      // log("${_pageController.position.pixels}");
     });
-    _ctrl.addStatusListener((status) {
-      log("status:$status");
-    });
+    // _ctrl.addStatusListener((status) {
+    //   log("status:$status");
+    // });
     setState(() {});
   }
   @override
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         title: const Text("首页",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.green,
       ),
-      body: buildGestureDetector(),
+      body:buildPageView(),
       // body: PageView.builder(itemBuilder: (BuildContext context, int index) {
       //   return buildPageItem(index);
       // },controller: _pageController,itemCount: 3,onPageChanged: (currentPageIndex){
@@ -113,6 +114,24 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     Animation<double> tweenAnim = Tween<double>(begin: dragValue.value, end: 0).animate(_ctrl);
     tweenAnim.addListener(() => dragValue.value = tweenAnim.value);
     await _ctrl.forward(from: 0);
+  }
+  Widget buildPageView(){
+    return PageView.builder(
+      itemCount: colors.length,
+      scrollDirection: Axis.horizontal,
+      controller: _pageController,
+      itemBuilder: (context, index) {
+        return StackPageView(
+          animationAxis: Axis.horizontal,
+          controller: _pageController,
+          index: index,
+          child:buildPageItem(index),
+        );
+      },
+      onPageChanged: (int i){
+        log("currentIndex:$i");
+      },
+    );
   }
   @override
   void dispose() {

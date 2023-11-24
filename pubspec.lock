@@ -136,14 +136,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.11.0"
-  stacked_page_view:
-    dependency: "direct main"
-    description:
-      name: stacked_page_view
-      sha256: adb069ce104b4c0296da4edce33116af8f458e5cb517f93cda0d743bbdebf965
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.2"
   stream_channel:
     dependency: transitive
     description:
@@ -194,4 +186,3 @@ packages:
     version: "0.1.4-beta"
 sdks:
   dart: ">=3.1.0-185.0.dev <4.0.0"
-  flutter: ">=1.17.0"
