@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../api/request.dart';
 import '../widgets/stackedPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void initState() {
     // TODO: implement initState
     super.initState();
+    getTodayInfo();
     pageList.value = [buildPageItem(0),buildPageItem(1),buildPageItem(2)];
     _ctrl = AnimationController(
       duration: const Duration(milliseconds: 250),
